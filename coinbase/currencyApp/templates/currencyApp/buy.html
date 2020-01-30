@@ -6,8 +6,12 @@
 </head>
 <body>
 <h1>Buy something here</h1>
-<form >
-
+<form method="post">
+    {% csrf_token %}
+    {{form}}
+    <br>
+    <br>
+    <input type="submit" value="Submit">
 
 </form>
 </body>
