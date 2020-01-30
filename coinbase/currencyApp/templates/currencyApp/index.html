@@ -5,6 +5,15 @@
     <title>Welcome page</title>
 </head>
 <body>
-<h1>Start page!</h1>
+<h1>Hi, here you can see how much Bitcoin costs now</h1>
+<ul>
+    {% for key, value in currencies.items %}
+    <li>{{key}} - {{value}}</li>
+    {% endfor %}
+</ul>
+
+<h1>Here you can see all your transactions</h1>
+
+
 </body>
 </html>
