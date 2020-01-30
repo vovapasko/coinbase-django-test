@@ -23,9 +23,6 @@ def get_all_orders():
     page = 1
     sort = 'created_at_desc'
     all_orders = api_get_all_orders(per_page, page, sort)
-    # as if I having problems with creating Orders using API by coingate, I decided to test my app on mock data.
-    # That's why I wrote next line. Uncomment it if you want to see how program works with no empty orders list
-    # all_orders = test_orders
     return all_orders
 
 
