@@ -12,8 +12,12 @@
     {% endfor %}
 </ul>
 
-<h1>Here you can see all your transactions</h1>
+<h1>Here you can see all your orders</h1>
 
+<p>You have {{orders.total_orders}} orders</p>
+{% if orders.total_orders > 0 %}
+<p>not zero</p>
+{% endif %}
 
 </body>
 </html>
