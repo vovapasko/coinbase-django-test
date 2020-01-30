@@ -1,7 +1,6 @@
 # contains main functions for data crawling
 from .request_tools import api_get_currency_price, api_get_all_orders, api_make_order
 import json
-from .tools import test_orders
 
 
 def get_currencies(currencies: list) -> dict:

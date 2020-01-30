@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -29,7 +30,7 @@ def buy(request):
             response = make_order(order_id, price_amount, price_currency, receive_currency)
             print(response.status_code)
             if response.status_code == 200:
-                redirect('index')
+                return HttpResponseRedirect('/money/')
             else:
                 return render(request, 'currencyApp/buy.html', {'form': form, 'error_message': str(response.json()['errors'])})
     else:
