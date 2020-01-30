@@ -1,8 +1,8 @@
 from django.urls import path
 
-from coinbase.currencyApp import views
+from . import views
 
+app_name = 'currencyApp'
 urlpatterns = [
     path('', views.index, name='index')
-
 ]
