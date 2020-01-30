@@ -27,3 +27,7 @@ def get_all_orders():
     # That's why I wrote next line. Uncomment it if you want to see how program works with no empty orders list
     # all_orders = test_orders
     return all_orders
+
+
+def make_order():
+    pass

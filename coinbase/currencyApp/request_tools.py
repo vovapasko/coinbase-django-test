@@ -28,3 +28,17 @@ def api_get_all_orders(per_page: float, page: float, sort) -> str:
     response = requests.get(f"{request_url}/v2/orders", headers=headers,
                             params=params).json()
     return response
+
+
+def api_make_order(order_id, price_amount, price_currency,
+                   receive_currency, receive_amount=0):
+    params = (
+        ('order_id', order_id),
+        ('price_amount', price_amount),
+        ('price_currency', price_currency),
+        ('receive_currency', receive_currency),
+        ('receive_amount', receive_amount)
+    )
+    response = requests.post(f"{request_url}/v2/orders", headers=headers,
+                             params=params)
+    return response
