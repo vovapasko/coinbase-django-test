@@ -1,5 +1,6 @@
 # contains main functions for data crawling
-from .request_tools import get_currency_price
+from .request_tools import api_get_currency_price, api_get_all_orders
+import json
 
 
 def get_currencies(currencies: list) -> dict:
@@ -11,11 +12,14 @@ def get_currencies(currencies: list) -> dict:
     """
     prices = {}
     for curr in currencies:
-        value = get_currency_price(curr.get('_from'), curr.get('_to'))
+        value = api_get_currency_price(curr.get('_from'), curr.get('_to'))
         prices[curr.get('_to')] = value
     return prices
 
 
 def get_all_orders():
-
-    pass
+    per_page = 100
+    page = 1
+    sort = 'created_at_desc'
+    all_orders = api_get_all_orders(per_page, page, sort)
+    return all_orders
