@@ -12,3 +12,7 @@ def index(request):
     print(all_orders)
     context = {'currencies': now_currency_prices, 'orders': all_orders}
     return render(request, 'currencyApp/index.html', context=context)
+
+
+def buy(request):
+    return render(request, 'currencyApp/buy.html')

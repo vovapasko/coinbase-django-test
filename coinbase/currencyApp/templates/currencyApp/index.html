@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Welcome page</title>
     <style>
+    a {
+        font-size: 16px;
+    }
         table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -57,6 +60,7 @@ td, th {
 </table>
 {% endif %}
 
-<!--<button>Make an order</button>-->
+<a href="{% url 'currencyApp:buy' %}">Make an order</a>
+
 </body>
 </html>
