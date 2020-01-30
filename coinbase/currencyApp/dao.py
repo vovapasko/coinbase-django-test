@@ -14,3 +14,8 @@ def get_currencies(currencies: list) -> dict:
         value = get_currency_price(curr.get('_from'), curr.get('_to'))
         prices[curr.get('_to')] = value
     return prices
+
+
+def get_all_orders():
+
+    pass
