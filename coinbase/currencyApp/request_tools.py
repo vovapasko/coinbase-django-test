@@ -7,6 +7,9 @@ headers = {
 }
 
 
+# TODO: Make request calls async
+# TODO: remove hardcoded urls
+
 def api_get_currency_price(_from, _to) -> float:
     uri = f"{settings.API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
     res = requests.get(uri)

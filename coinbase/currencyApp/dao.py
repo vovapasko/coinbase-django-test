@@ -3,6 +3,8 @@ from .request_tools import api_get_currency_price, api_get_all_orders, api_make_
 import json
 
 
+# TODO: make api calls async
+
 def get_currencies(currencies: list) -> dict:
     """currencies should be in format
     a1 = {"_from": "BTC", "_to": "EUR"}
