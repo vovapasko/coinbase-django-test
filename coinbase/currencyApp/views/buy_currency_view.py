@@ -4,13 +4,17 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
-from currencyApp.dao import make_order
 from currencyApp.forms import OrderForm
+
+from currencyApp.services import CoingateApiService
+
+from currencyApp.models import Order
 
 
 class BuyCurrencyView(View):
     template_name = 'currencyApp/buy.html'
     form = OrderForm()
+    api_service = CoingateApiService()
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {'form': self.form})
@@ -18,13 +22,12 @@ class BuyCurrencyView(View):
     def post(self, request, *args, **kwargs):
         self.form = OrderForm(request.POST)
         if self.form.is_valid():
-            price_amount = self.form.cleaned_data['price_amount']
-            price_currency = self.form.cleaned_data['price_currency']
-            receive_currency = self.form.cleaned_data['receive_currency']
-            order_id = uuid.uuid4()
-            response = make_order(order_id, price_amount, price_currency, receive_currency)
+            order = self.form.save(commit=False)
+            # TODO: provide saving order in db
+            response = self.api_service.make_order(order)
             if response.status_code == 200:
+                # TODO: provide saving invoice in db
                 return HttpResponseRedirect('/money')
-            else:
-                return render(request, self.template_name,
-                              {'form': self.form, 'error_message': str(response.json()['errors'])})
+            return render(request, self.template_name,
+                          {'form': self.form, 'error_message': str(response.json()['errors'])})
+        return render(request, self.template_name, {'form': self.form})
