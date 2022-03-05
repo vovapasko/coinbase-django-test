@@ -17,15 +17,12 @@ class BuyCurrencyView(View):
 
     def post(self, request, *args, **kwargs):
         self.form = OrderForm(request.POST)
-        print("Here")
         if self.form.is_valid():
             price_amount = self.form.cleaned_data['price_amount']
             price_currency = self.form.cleaned_data['price_currency']
             receive_currency = self.form.cleaned_data['receive_currency']
-            print(price_amount, price_currency, receive_currency)
             order_id = uuid.uuid4()
             response = make_order(order_id, price_amount, price_currency, receive_currency)
-            print(response.status_code)
             if response.status_code == 200:
                 return HttpResponseRedirect('/money')
             else:

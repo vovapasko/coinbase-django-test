@@ -34,7 +34,7 @@ def api_get_all_orders(per_page: float, page: float, sort) -> str:
 
 
 def api_make_order(order_id, price_amount, price_currency,
-                   receive_currency, receive_amount=0):
+                   receive_currency, receive_amount=0) -> requests.Response:
     params = (
         ('order_id', order_id),
         ('price_amount', price_amount),

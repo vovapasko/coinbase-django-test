@@ -1,6 +1,6 @@
 # contains main functions for data crawling
+from .models import Order
 from .request_tools import api_get_currency_price, api_get_all_orders, api_make_order
-import json
 
 
 # TODO: make api calls async
@@ -27,6 +27,6 @@ def get_all_orders():
     return all_orders
 
 
-def make_order(order_id, price_amount, price_currency, receive_currency):
-    response = api_make_order(order_id, price_amount, price_currency, receive_currency)
+def make_order(order: Order):
+    response = api_make_order(order.order_id, order.price_amount, order.price_currency, order.receive_currency)
     return response
