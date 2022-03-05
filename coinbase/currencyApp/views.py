@@ -3,13 +3,13 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from .dao import get_currencies, get_all_orders, make_order
-from .configs import CURRENCIES
+from django.conf import settings
 from .forms import OrderForm
 import uuid
 
 
 def index(request):
-    now_currency_prices = get_currencies(CURRENCIES)
+    now_currency_prices = get_currencies(settings.CURRENCIES)
     print(now_currency_prices)
     all_orders = get_all_orders()
     print(all_orders)
