@@ -1,9 +1,8 @@
 from django.urls import path
-
-from . import views
+from .views import FetchCurrenciesView, BuyCurrencyView
 
 app_name = 'currencyApp'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('buy/', views.buy, name='buy'),
+    path('', FetchCurrenciesView.as_view(), name='fetch_currencies_view'),
+    path('buy/', BuyCurrencyView.as_view(), name='buy_currency_view'),
 ]
