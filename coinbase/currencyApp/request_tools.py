@@ -1,14 +1,14 @@
 """Contains functions which get data from HTTP requests"""
 import requests
-from .configs import request_url, API_KEY
+from django.conf import settings
 
 headers = {
-    'Authorization': f'Token {API_KEY}',
+    'Authorization': f'Token {settings.API_KEY}',
 }
 
 
 def api_get_currency_price(_from, _to) -> float:
-    uri = f"{request_url}/v2/rates/merchant/{_from}/{_to}"
+    uri = f"{settings.API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
     res = requests.get(uri)
     try:
         value = float(res.content)
@@ -25,7 +25,7 @@ def api_get_all_orders(per_page: float, page: float, sort) -> str:
         ('page', str(page)),
         ('sort', sort),
     )
-    response = requests.get(f"{request_url}/v2/orders", headers=headers,
+    response = requests.get(f"{settings.API_ENDPOINT}/v2/orders", headers=headers,
                             params=params).json()
     return response
 
@@ -39,6 +39,6 @@ def api_make_order(order_id, price_amount, price_currency,
         ('receive_currency', receive_currency),
         ('receive_amount', receive_amount)
     )
-    response = requests.post(f"{request_url}/v2/orders", headers=headers,
+    response = requests.post(f"{settings.API_ENDPOINT}/v2/orders", headers=headers,
                              params=params)
     return response

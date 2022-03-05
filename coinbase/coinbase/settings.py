@@ -119,3 +119,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+API_KEY = os.environ.get("API_KEY")
+API_ENDPOINT = os.environ.get("API_ENDPOINT")
+# you can add extra currencies here. Be careful about codes
+CURRENCIES = [
+    {"_from": "BTC", "_to": "EUR"},
+    {"_from": "BTC", "_to": "USD"},
+    {"_from": "BTC", "_to": "GBP"},
+]
