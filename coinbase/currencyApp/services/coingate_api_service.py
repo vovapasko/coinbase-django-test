@@ -3,7 +3,6 @@ from typing import List
 import aiohttp
 from currencyApp.services.base_api_service import BaseApiService
 
-from currencyApp.models import Order
 import requests
 from django.conf import settings
 
@@ -28,37 +27,37 @@ class CoingateApiService(BaseApiService):
         """
         prices = {}
         for curr in currencies:
+            # TODO: can be cached
             value = await self.__api_get_currency_price(curr.get('_from'), curr.get('_to'))
             prices[curr.get('_to')] = value
         return prices
 
-    def get_all_orders(self):
+    async def get_all_orders(self):
         per_page = 100
         page = 1
         sort = 'created_at_desc'
-        all_orders = self.__api_get_all_orders(per_page, page, sort)
+        all_orders = await self.__api_get_all_orders(per_page, page, sort)
         return all_orders
 
     def make_order(self, order: Order):
         response = self.__api_make_order(order)
         return response
 
-    async def __api_get_currency_price(self, _from, _to) -> float:
-        uri = f"{settings.COINBASE_API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
+    async def __make_async_request(self, url: str, headers: dict = None):
         async with aiohttp.ClientSession() as session:
-            async with session.get(uri) as response:
+            async with session.get(url, headers=headers) as response:
                 print("Status:", response.status)
-                print("Content-type:", response.headers['content-type'])
+                return await response.json()
 
-                value = await response.json()
+    async def __api_get_currency_price(self, _from, _to) -> float:
+        url = f"{settings.COINBASE_API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
         try:
-            value = float(value)
-        except ValueError:
+            return await self.__make_async_request(url)
+        except ValueError as error:
             print(f"Probably problem with the keys {_from} or {_to}")
-            value = None
-        return value
+            raise error
 
-    def __api_get_all_orders(self, per_page: float, page: float, sort) -> str:
+    async def __api_get_all_orders(self, per_page: float, page: float, sort) -> str:
         """Please note that per_page is 100. If you choose more, 100 wil be selected"""
         params = (
             ('per_page', str(per_page)),

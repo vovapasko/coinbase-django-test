@@ -24,10 +24,12 @@ There are several python files which are responsible for making the most importa
 
 
 ## TODO
-0. Refactor current code. Provide class-based views
-1. Add models.
+0. Refactor current code. Provide class-based views (done)
+1. Add models. (done)
 2. Provide storing the results in db.
 3. Provide tests.
 4. Provide async api requests.
 5. Provide fancy frontend.
 6. Dockerize.
+7. Provide caching.
+8. Provide logging (elasticsearch).
