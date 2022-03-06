@@ -1,12 +1,12 @@
 from django import forms
 
-from currencyApp.models import Order
+from currencyApp.models import CoingateOrder
 
 
-class OrderForm(forms.ModelForm):
+class CoingateOrderForm(forms.ModelForm):
     class Meta:
-        model = Order
-        exclude = ['order_id']
+        model = CoingateOrder
+        fields = ['price_amount', 'price_currency', 'receive_currency']
 
     price_amount = forms.FloatField(label='Price amount', required=True)
     price_currency = forms.ChoiceField(choices=[("BTC", "BTC"), ("USD", "USD"), ("EUR", "EUR")], required=True)

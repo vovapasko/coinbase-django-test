@@ -10,4 +10,6 @@ class Order(models.Model):
     price_amount = models.FloatField()
     price_currency = models.CharField(max_length=max_len_currency_constant)
     receive_currency = models.CharField(max_length=max_len_currency_constant)
-    receive_amount = models.FloatField()
+
+    class Meta:
+        abstract = True

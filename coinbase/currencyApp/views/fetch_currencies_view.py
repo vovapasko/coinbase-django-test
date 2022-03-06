@@ -2,12 +2,12 @@ from django.shortcuts import render
 from django.views import View
 from django.conf import settings
 
-from currencyApp.services import CoingateApiService
+from currencyApp.services import BaseApiService, CoingateApiService
 
 
 class FetchCurrenciesView(View):
     template_name = 'currencyApp/index.html'
-    api_service = CoingateApiService()
+    api_service: BaseApiService = CoingateApiService()
 
     def get(self, request, *args, **kwargs):
         now_currency_prices = self.api_service.get_currencies(settings.CURRENCIES)
