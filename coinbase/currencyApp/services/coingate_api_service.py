@@ -1,5 +1,6 @@
 from typing import List
 
+import aiohttp
 from currencyApp.services.base_api_service import BaseApiService
 
 from currencyApp.models import Order
@@ -18,7 +19,7 @@ class CoingateApiService(BaseApiService):
         'Authorization': f'Token {settings.API_KEY}',
     }
 
-    def get_currencies(self, currencies: List[Order]) -> dict:
+    async def get_currencies(self, currencies: List[Order]) -> dict:
         """currencies should be in format
         a1 = {"_from": "BTC", "_to": "EUR"}
         a2 = {"_from": "ETH", "_to": "EUR"}
@@ -27,7 +28,7 @@ class CoingateApiService(BaseApiService):
         """
         prices = {}
         for curr in currencies:
-            value = self.__api_get_currency_price(curr.get('_from'), curr.get('_to'))
+            value = await self.__api_get_currency_price(curr.get('_from'), curr.get('_to'))
             prices[curr.get('_to')] = value
         return prices
 
@@ -42,11 +43,16 @@ class CoingateApiService(BaseApiService):
         response = self.__api_make_order(order)
         return response
 
-    def __api_get_currency_price(self, _from, _to) -> float:
-        uri = f"{settings.API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
-        res = requests.get(uri)
+    async def __api_get_currency_price(self, _from, _to) -> float:
+        uri = f"{settings.COINBASE_API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(uri) as response:
+                print("Status:", response.status)
+                print("Content-type:", response.headers['content-type'])
+
+                value = await response.json()
         try:
-            value = float(res.content)
+            value = float(value)
         except ValueError:
             print(f"Probably problem with the keys {_from} or {_to}")
             value = None
@@ -59,7 +65,7 @@ class CoingateApiService(BaseApiService):
             ('page', str(page)),
             ('sort', sort),
         )
-        response = requests.get(f"{settings.API_ENDPOINT}/v2/orders", headers=self.headers,
+        response = requests.get(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders", headers=self.headers,
                                 params=params).json()
         return response
 
@@ -71,6 +77,6 @@ class CoingateApiService(BaseApiService):
             ('receive_currency', order.receive_currency),
             ('receive_amount', order.receive_amount)
         )
-        response = requests.post(f"{settings.API_ENDPOINT}/v2/orders", headers=self.headers,
+        response = requests.post(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders", headers=self.headers,
                                  params=params)
         return response

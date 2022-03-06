@@ -115,7 +115,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 API_KEY = os.environ.get("API_KEY")
-API_ENDPOINT = os.environ.get("API_ENDPOINT")
+COINBASE_SANDBOX_API_ENDPOINT = os.environ.get("COINBASE_SANDBOX_API_ENDPOINT")
+COINBASE_API_ENDPOINT = os.environ.get("COINBASE_API_ENDPOINT")
 # you can add extra currencies here. Be careful about codes
 CURRENCIES = [
     {"_from": "BTC", "_to": "EUR"},

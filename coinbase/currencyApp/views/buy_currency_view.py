@@ -9,7 +9,6 @@ from currencyApp.forms import CoingateOrderForm
 from currencyApp.services import CoingateApiService
 
 
-
 class BuyCurrencyView(View):
     template_name = 'currencyApp/buy.html'
     form = CoingateOrderForm()

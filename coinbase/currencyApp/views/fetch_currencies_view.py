@@ -3,6 +3,7 @@ from django.views import View
 from django.conf import settings
 
 from currencyApp.services import BaseApiService, CoingateApiService
+import asyncio
 
 
 class FetchCurrenciesView(View):
@@ -10,7 +11,8 @@ class FetchCurrenciesView(View):
     api_service: BaseApiService = CoingateApiService()
 
     def get(self, request, *args, **kwargs):
-        now_currency_prices = self.api_service.get_currencies(settings.CURRENCIES)
+        now_currency_prices = asyncio.run(
+            self.api_service.get_currencies(settings.CURRENCIES))
         all_orders = self.api_service.get_all_orders()
         context = {'currencies': now_currency_prices, 'orders': all_orders}
         return render(request, self.template_name, context=context)
