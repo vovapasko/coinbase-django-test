@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 
 from django.http import HttpResponseRedirect
@@ -21,7 +22,7 @@ class BuyCurrencyView(View):
         self.form = CoingateOrderForm(request.POST)
         if self.form.is_valid():
             order = self.form.save()
-            response = self.api_service.make_order(order)
+            response = asyncio.run(self.api_service.make_order(order))
             if response.status_code == 200:
                 # TODO: provide saving invoice in db
                 return HttpResponseRedirect('/money')

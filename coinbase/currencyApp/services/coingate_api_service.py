@@ -39,20 +39,26 @@ class CoingateApiService(BaseApiService):
         all_orders = await self.__api_get_all_orders(per_page, page, sort)
         return all_orders
 
-    def make_order(self, order: Order):
-        response = self.__api_make_order(order)
+    async def make_order(self, order: Order):
+        response = await self.__api_make_order(order)
         return response
 
-    async def __make_async_request(self, url: str, headers: dict = None):
+    async def __make_async_get_request(self, url: str, headers: dict = None, params: tuple = None):
         async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers) as response:
+            async with session.get(url, headers=headers, params=params) as response:
+                print("Status:", response.status)
+                return await response.json()
+
+    async def __make_async_post_request(self, url: str, headers: dict = None, params: tuple = None):
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, params=params) as response:
                 print("Status:", response.status)
                 return await response.json()
 
     async def __api_get_currency_price(self, _from, _to) -> float:
         url = f"{settings.COINBASE_API_ENDPOINT}/v2/rates/merchant/{_from}/{_to}"
         try:
-            return await self.__make_async_request(url)
+            return await self.__make_async_get_request(url)
         except ValueError as error:
             print(f"Probably problem with the keys {_from} or {_to}")
             raise error
@@ -64,11 +70,12 @@ class CoingateApiService(BaseApiService):
             ('page', str(page)),
             ('sort', sort),
         )
-        response = requests.get(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders", headers=self.headers,
-                                params=params).json()
+        response = await self.__make_async_get_request(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders",
+                                                       headers=self.headers,
+                                                       params=params)
         return response
 
-    def __api_make_order(self, order: Order) -> requests.Response:
+    async def __api_make_order(self, order: Order) -> requests.Response:
         params = (
             ('order_id', order.order_id),
             ('price_amount', order.price_amount),
@@ -76,6 +83,7 @@ class CoingateApiService(BaseApiService):
             ('receive_currency', order.receive_currency),
             ('receive_amount', order.receive_amount)
         )
-        response = requests.post(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders", headers=self.headers,
-                                 params=params)
+        response = await self.__make_async_post_request(f"{settings.COINBASE_SANDBOX_API_ENDPOINT}/v2/orders",
+                                                        headers=self.headers,
+                                                        params=params)
         return response
