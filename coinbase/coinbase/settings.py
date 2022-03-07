@@ -117,9 +117,13 @@ STATIC_URL = '/static/'
 API_KEY = os.environ.get("API_KEY")
 COINBASE_SANDBOX_API_ENDPOINT = os.environ.get("COINBASE_SANDBOX_API_ENDPOINT")
 COINBASE_API_ENDPOINT = os.environ.get("COINBASE_API_ENDPOINT")
+COINBASE_API_VERSION = "v2"
 # you can add extra currencies here. Be careful about codes
 CURRENCIES = [
     {"_from": "BTC", "_to": "EUR"},
     {"_from": "BTC", "_to": "USD"},
     {"_from": "BTC", "_to": "GBP"},
 ]
+ORDERS_PER_PAGE = 100
+ORDER_PAGES = 1
+ORDERS_SORT = 'created_at_desc'

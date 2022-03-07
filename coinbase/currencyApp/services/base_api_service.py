@@ -7,13 +7,17 @@ from ..models import Order
 
 class BaseApiService(abc.ABC):
     @abstractmethod
-    def get_currencies(self):
+    async def get_supported_currencies(self) -> dict:
         pass
 
     @abstractmethod
-    def get_all_orders(self):
+    async def get_exchange_rate(self, _from, _to) -> float:
         pass
 
     @abstractmethod
-    def make_order(self, order: Order):
+    async def get_all_orders(self) -> list:
+        pass
+
+    @abstractmethod
+    async def make_order(self, order: Order):
         pass
