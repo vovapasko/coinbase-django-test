@@ -51,7 +51,7 @@ class CoingateApiService(BaseApiService):
 
     async def __make_async_post_request(self, url: str, headers: dict = None, params: tuple = None):
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, headers=headers, params=params) as response:
+            async with session.post(url, headers=headers, data=params) as response:
                 print("Status:", response.status)
                 return await response.json()
 

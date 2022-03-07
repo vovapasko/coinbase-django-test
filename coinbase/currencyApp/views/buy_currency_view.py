@@ -22,10 +22,11 @@ class BuyCurrencyView(View):
         self.form = CoingateOrderForm(request.POST)
         if self.form.is_valid():
             order = self.form.save()
-            response = asyncio.run(self.api_service.make_order(order))
-            if response.status_code == 200:
+            try:
+                response = asyncio.run(self.api_service.make_order(order))
                 # TODO: provide saving invoice in db
-                return HttpResponseRedirect('/money')
-            return render(request, self.template_name,
-                          {'form': self.form, 'error_message': str(response.json()['errors'])})
+                return HttpResponseRedirect(response.get('payment_url'))
+            except Exception:
+                return render(request, self.template_name,
+                              {'form': self.form, 'error_message': str(response.json()['errors'])})
         return render(request, self.template_name, {'form': self.form})
