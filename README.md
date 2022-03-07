@@ -28,7 +28,7 @@ There are several python files which are responsible for making the most importa
 1. Add models. (done)
 2. Provide storing the results in db.
 3. Provide tests.
-4. Provide async api requests.
+4. Provide async api requests. (done)
 5. Provide fancy frontend.
 6. Dockerize.
 7. Provide caching.

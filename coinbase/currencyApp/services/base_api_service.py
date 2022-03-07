@@ -2,7 +2,7 @@ import abc
 from abc import abstractmethod
 from typing import List
 
-from currencyApp.models import Order
+from ..models import Order
 
 
 class BaseApiService(abc.ABC):

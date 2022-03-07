@@ -1,12 +1,12 @@
 from typing import List
 
 import aiohttp
-from currencyApp.services.base_api_service import BaseApiService
+from ..services.base_api_service import BaseApiService
 
 import requests
 from django.conf import settings
 
-from currencyApp.models import Order
+from ..models import Order, CoingateOrder
 
 
 # TODO: Make request calls async
@@ -18,13 +18,16 @@ class CoingateApiService(BaseApiService):
         'Authorization': f'Token {settings.API_KEY}',
     }
 
-    async def get_currencies(self, currencies: List[Order]) -> dict:
+    async def get_currencies(self) -> dict:
+        return await self.__fetch_currencies(settings.CURRENCIES)
+
+    async def __fetch_currencies(self, currencies: List[CoingateOrder]):
         """currencies should be in format
-        a1 = {"_from": "BTC", "_to": "EUR"}
-        a2 = {"_from": "ETH", "_to": "EUR"}
-        values = [a1, a2]
-        get_currencies(values)
-        """
+               a1 = {"_from": "BTC", "_to": "EUR"}
+               a2 = {"_from": "ETH", "_to": "EUR"}
+               values = [a1, a2]
+               get_currencies(values)
+               """
         prices = {}
         for curr in currencies:
             # TODO: can be cached
@@ -39,7 +42,7 @@ class CoingateApiService(BaseApiService):
         all_orders = await self.__api_get_all_orders(per_page, page, sort)
         return all_orders
 
-    async def make_order(self, order: Order):
+    async def make_order(self, order: CoingateOrder):
         response = await self.__api_make_order(order)
         return response
 
@@ -75,7 +78,7 @@ class CoingateApiService(BaseApiService):
                                                        params=params)
         return response
 
-    async def __api_make_order(self, order: Order) -> requests.Response:
+    async def __api_make_order(self, order: CoingateOrder) -> requests.Response:
         params = (
             ('order_id', order.order_id),
             ('price_amount', order.price_amount),

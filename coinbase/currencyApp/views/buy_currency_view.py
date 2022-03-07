@@ -5,9 +5,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
-from currencyApp.forms import CoingateOrderForm
+from ..forms import CoingateOrderForm
 
-from currencyApp.services import CoingateApiService
+from ..services import CoingateApiService
 
 
 class BuyCurrencyView(View):
@@ -24,9 +24,8 @@ class BuyCurrencyView(View):
             order = self.form.save()
             try:
                 response = asyncio.run(self.api_service.make_order(order))
-                # TODO: provide saving invoice in db
                 return HttpResponseRedirect(response.get('payment_url'))
-            except Exception:
+            except Exception as ex:
                 return render(request, self.template_name,
-                              {'form': self.form, 'error_message': str(response.json()['errors'])})
+                              {'form': self.form, 'error_message': str(ex)})
         return render(request, self.template_name, {'form': self.form})
