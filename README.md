@@ -19,6 +19,17 @@ All main logic cointains coinbase-django-test/coinbase/currencyApp.
 
 There are several python files which are responsible for making the most important things:
 
-* configs.py - keeps the main "credentials" info such as API key, currencies list and url where API should make requests;
 * dao.py - main file for interacting and handling pure data, which was got from Coinbase. Here is the logic of how data should be converted for the front pages;
 * request_tools.py - file where provided functions for getting responce from outter API.
+
+
+## TODO
+0. Refactor current code. Provide class-based views (done)
+1. Add models. (done)
+2. Provide storing the results in db.
+3. Provide tests.
+4. Provide async api requests. (done)
+5. Provide fancy frontend.
+6. Dockerize.
+7. Provide caching.
+8. Provide logging (elasticsearch).
